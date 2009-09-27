@@ -1,0 +1,378 @@
+#-----------------------
+# Personal Info
+# ---------------------
+
+set realname="Jay Buffington"
+set from="jaybuff@yahoo-inc.com"
+
+set hostname="yahoo-inc.com"
+
+
+# Any address that is the same as "me"
+#set alternates="^jaybuff@.*.yahoo-inc.com"
+
+#-----------------------
+# mailboxes
+#---------------------
+
+#set spoolfile = imap://localhost/INBOX  # where new mail arrives
+#set folder=imap://localhost/
+#set mbox_type=mbox              # format of mailbox
+
+set record=+Sent                # where to save sent messages
+set postponed="+Drafts"         # where to save postponed (draft) msgs
+
+# mailboxes are places where new mail CAN arrive, not all folders which
+# contain mail. Use the folder path
+#mailboxes '!'                   # the "spoolfile"
+#mailboxes +devel +forsale +pub-bugzilla
+
+set sort=threads                # sort by threads
+set sort_aux=date               # and threads by date
+
+set wait_key=no                 # don't "press a key" after shelling out
+set write_bcc=no                # don't show bcc to recipients
+
+set mail_check=5                # check new mail no more than every 5 seconds
+set timeout=15                  # check for new mail at least every 30 seconds
+
+set markers=no                  # don't prefix continued lines with '+'
+set recall=no                   # don't prompt to recall old when composing
+
+
+#-----------------------
+# mailbox settings
+#-----------------------
+
+set copy=yes
+set move="no"
+set delete="yes"                    # autopurge deleted messages
+
+# ----------------------
+# replying to email
+# ---------------------
+
+set include=ask-yes
+
+set mark_old=no                     # mark new unread messages as old
+set edit_headers=yes                # edit message headers when composing
+set smart_wrap
+unset markers                       # hide '+' line continuation markers
+
+set fast_reply               # don't prompt for recipients on reply/forward
+
+set forward_format="FW: %s"         # subject line for forwarded email
+
+# ---------------------
+# Printing
+# ---------------------
+
+set print_command='a2ps -o- | /usr/bin/lpr -h -P$PRINTER'
+
+set print="ask-no"                  # ask before printing
+set print_decode="yes"              # decode messages before printing
+
+# ---------------------
+# Aliases
+# ---------------------
+
+# How to attribute replies
+set attribution="On %d, %f wrote:"
+
+#   Call Kevin Athey's address book program to extract the addresses
+set query_command="kdab -s '%s'"
+
+
+# ---------------------
+# Display
+# ---------------------
+
+#   Headers I don't want to see
+ignore *
+unignore date from to cc subject reply-to
+
+#   Headers in the order I like
+hdr_order date subject from to cc reply-to 
+
+set index_format="%4C %Z %{%b %d} %-15.15F (%4l) %s"
+#set forward_format="Fw: %s"     # Subject to use when forwarding messages
+set date_format="%d/%m/%y %H:%M %Z"
+
+#   set quote_regexp="^([ \t]*[|>:}#])+"
+set quote_regexp="^([A-Za-z ]+>|[]%>:|}-][]>:|}-]*)"
+set reply_regexp="^(re([\\[0-9\\]+])*|aw):[ \t]*"
+ 
+#   Apply operations to tagged messages automatically
+set auto_tag
+
+# do not collapse threads if they contain unread messages
+set nocollapse_unread
+
+# show context in the pages
+set pager_index_lines = 15
+
+#http://www.mutt.org/doc/manual/manual-4.html#patterns
+
+# ---------------------
+# Macros
+#------------------------
+
+macro index ,b |urlview\n
+macro pager ,b |urlview\n
+
+macro index .8 "|/usr/local/bin/bash\n"
+macro pager .8 "|/usr/local/bin/bash\n"
+
+# Trash the way I like it
+#   In other words, when I delete a message it actually gets moved to the trash
+#   AND the other commands update the index after the above move
+macro index d <save-message>=trash\n "delete (move to trash)"
+macro pager d <save-message>=trash\n "delete (move to trash)"
+
+
+# viewing macros
+macro pager .n "q<limit>~N\n\n"
+macro index .n "<limit>~N\n"
+
+macro pager .a "q<limit>~A\n\n"
+macro index .a "<limit>~A\n"
+
+macro pager .u "q<limit>~N | ~O\n\n"   # old or unread
+macro index ,u "<limit>~N | ~O\n"
+
+macro pager .F "q<limit>~F\n\n"
+macro index .F "<limit>~F\n"
+
+macro index .t ":set sort=threads\n:set sort_aux=date\n"
+macro pager .t ":set sort=threads\n:set sort_aux=date\n"
+macro index .T ":set sort=threads\n:set sort_aux=reverse-date\n"
+macro pager .T ":set sort=threads\n:set sort_aux=reverse-date\n"
+macro index .d ":set sort=reverse-date\n"
+macro pager .d ":set sort=reverse-date\n"
+
+macro pager .0 ":set pager_index_lines=0\n"
+macro pager .1 ":set pager_index_lines=7\n"
+macro pager .2 ":set pager_index_lines=13\n"
+
+
+# ,m for mutt stuff
+#  e to edit muttrc, r to reload muttrc, a to edit aliases
+macro pager   ,me   "!vim ~/.muttrc\r"
+macro index   ,me   "!vim ~/.muttrc\r"
+macro browser ,me   "!vim ~/.muttrc\r"
+macro pager   ,mr   ":source ~/.muttrc\r" 
+macro index   ,mr   ":source ~/.muttrc\r" 
+macro browser ,mr   ":source ~/.muttrc\r"
+macro pager   ,ma   "!vim ~/.mutt.aliases\r"
+macro index   ,ma   "!vim ~/.mutt.aliases\r"
+macro browser ,ma   "!vim ~/.mutt.aliases\r"
+
+
+# ,t for tagging
+macro index ,tt     <read-thread><next-thread>
+macro pager ,tt     <read-thread><next-thread>\n
+macro index ,ts     <tag-subthread>
+macro pager ,ts     <tag-subthread>
+macro index ,tr     <read-thread><next-thread>
+macro pager ,tr     <read-thread><next-thread><display>
+
+
+# unbind the c and s keys so they can be used in to change and
+# save specific folder.
+# rebind c and s to <esc>c and <esc>s
+
+bind pager c noop
+bind index c noop
+bind index s noop
+bind pager s noop
+macro pager <esc>c <change-folder>
+macro index <esc>c <change-folder>
+macro index <esc>s <save-message>
+macro pager <esc>s <save-message>
+
+### MOVE AND GOTO MACROS
+# USE c and s to save to specific folders
+# Folder assignments: 
+# use 'mutt-folder-aliaser.pl' to generate new entries (or regen everything)
+# you can pipe one new entry through the file, or pipe the section through it.
+
+#    g     -> +reference/g-support
+#    G     -> +reference/G-support-old
+#    h     -> +Inbox
+#    p     -> +reference/p-poolboy
+#    P     -> +reference/P-poolboy-old
+#    ss    -> +Sent
+#    Z     last month's mail
+#    z     recent mail
+
+#    raa   -> /homes/jdagnall/log/all_mail
+#    rbb   -> +reference/rb-bugzilla
+#    rcv   -> +reference/rcv-ycvs
+#    rdd   -> +reference/rd-devel
+#    rdh   -> +reference/rdh-devel-help
+#    ree   -> +reference/ree-resumes
+#    rff   -> +reference/rf-forsale
+#    rgg   -> +reference/rgg-general
+#    rgt   -> +reference/rgtd-gettingthingsdone
+#    rhh   -> +reference/rhh-hudson
+#    rig   -> +reference/rig-igor
+#    rii   => +reference/rii-integration
+#    rpa   -> +reference/rpa-parents
+#    rph   -> +reference/rph-yphotography
+#    rrb   -> +reference/rrb-requests-bz
+#    rro   -> +reference/rro-rose
+#    rrv   -> +reference/rrv-requests-vault
+#    rtt   -> +reference/rtt-team
+#    rtw   -> +reference/rtw-twiki
+#    rvk   -> +reference/rvk-viking-table
+#    rvm   -> +reference/rvm-vim
+#    rvv   -> +reference/rv-vault
+#    ryf   -> +references/yyf-yforge
+#    ryy   -> +reference/ryy-yahoo
+
+#    aae   -> imaps://jud@thedagnalls.com/aae-actions-errands
+#    aca   -> imaps://jud@thedagnalls.com/aca-actions-calls
+#    acc   -> imaps://jud@thedagnalls.com/acc-actions-computer
+#    ach   -> imaps://jud@thedagnalls.com/acw-actions-computer-home
+#    acw   -> imaps://jud@thedagnalls.com/acw-actions-computer-work
+#    ahh   -> imaps://jud@thedagnalls.com/ahh-actions-home
+#    arr   -> imaps://jud@thedagnalls.com/arr-actions-read-review
+#    awf   -> imaps://jud@thedagnalls.com/awf-actions-waiting-for
+#    aww   -> imaps://jud@thedagnalls.com/aww-actions-work
+#    ay    -> imaps://jud@thedagnalls.com/ay-actions-anywhere
+#    bzr   -> imaps://jud@thedagnalls.com/project-support/bzr-reporting
+#    caa   -> imaps://jud@thedagnalls.com/caa-completed-actions
+#    j     -> imaps://jud@thedagnalls.com/INBOX
+
+# ---------------------------------
+# BEGIN folder shortcut definitions
+# use the 'mutt-folder-aliaser.pl' command to regenerated after
+# updating the above folder shortcuts. You can pipe a new entry through it.
+# ---------------------------------
+
+macro index ch "<change-folder>+Inbox\n"
+macro pager ch "<change-folder>+Inbox\n"
+macro index sh "<save-message>+Inbox\n"
+macro pager sh "<save-message>+Inbox\n"
+
+# ---------------------------------
+# END folder shortcut definitions
+# ---------------------------------
+
+macro pager s= "<save-message>"
+macro index s= "<save-message>"
+macro pager s+ "<decode-save>"
+macro index s+ "<decode-save>"
+
+
+# ---------------------
+# MIME and types
+# ---------------------
+
+# Tell mutt which MIME types to auto-view
+auto_view application/pgp-signature
+auto_view application/pgp
+auto_view text/html
+auto_view image/tiff
+auto_view image/gif
+auto_view image/jpeg
+auto_view text/calendar
+
+alternative_order text/enriched text/plain text/html
+set implicit_autoview
+
+unset confirmappend
+
+set mime_forward="ask-yes"
+
+# ---------------------
+# mailing lists
+# ---------------------
+
+#subscribe All-sunnyvale
+
+# how to send mail
+# ---------------------
+# External programs
+# ---------------------
+
+# how to send mail
+#set sendmail="/usr/sbin/sendmail -oem -oi"
+
+set smtp_url="smtp://smtp.yahoo.com"
+
+
+# editors
+#set editor="vim -u ~/.mutt/vimrc.mutt +7"
+#set visual="vim -u ~/.mutt/vimrc.mutt +7"
+
+#==========================================================================
+#==========================================================================
+# Colors
+#--------------------------------------------------------------------------
+
+# set the environment to COLORFGBG="black;white"
+#color  object      foreground  background  patterns /expressions
+
+color   indicator       brightyellow     red 
+color   status          white           blue
+color   tree            blue            default
+
+color   index           red             default        ~N
+color   index           white          default        ~D
+
+color   body            magenta         default        "^>.*"
+color   body            cyan            default        "^> >.*"
+color   body            magenta         default        "^> > >.*"
+color   body            cyan            default        "^> > > >.*"
+
+#==========================================================================
+# Folder hooks
+#--------------------------------------------------------------------------
+
+unhook *  # clear all hooks
+
+folder-hook .           set from="jaybuff@yahoo-inc.com"
+#folder-hook .           set signature="~/etc/sigs/yahoo"
+folder-hook .           unmy_hdr Bcc:
+
+folder-hook Sent         set sort=date
+
+
+
+# set up the sidebar, default not visible
+set sidebar_width=20
+set sidebar_visible=no
+set sidebar_delim=' '
+
+# which mailboxes to list in the sidebar
+mailboxes =inbox =all-worldwide =devel-announce =devel-perl =mac-users =nanook-devel =cloudserver-devel =spicy-lunch =reviewboard-users =reviewboard-devel =ycloud-leads
+
+
+
+# color of folders with new mail
+color sidebar_new yellow default
+
+# ctrl-n, ctrl-p to select next, prev folder
+# ctrl-o to open selected folder
+bind index \CP sidebar-prev
+bind index \CN sidebar-next
+bind index \CO sidebar-open
+
+bind pager \CP sidebar-prev
+bind pager \CN sidebar-next
+bind pager \CO sidebar-open
+
+# I don't need these.  just for documentation purposes.  See below.
+# sidebar-scroll-up
+# sidebar-scroll-down
+
+# b toggles sidebar visibility
+macro index b '<enter-command>toggle sidebar_visible<enter>'
+macro pager b '<enter-command>toggle sidebar_visible<enter>'
+
+# Remap bounce-message function to "B"
+bind index B bounce-message
+
+source ~/.mutt/gpg.rc             # Use GPG
+
