@@ -1,0 +1,38 @@
+SHELL=/bin/sh
+DEFAULT=/var/mail/jaybuff
+MAILDIR=$HOME/Mail
+LOGFILE=$HOME/procmail.log
+LINEBUF=32768
+LOGABSTRACT=yes
+
+
+ARCHIVE         =`/bin/date +%Y-%m`
+ARCHIVE_DIR     = $HOME/Mail/all_mail
+
+########################################################################
+### Make a copy of all mail
+########################################################################
+:0c:
+$ARCHIVE_DIR/$ARCHIVE
+
+:0
+* ^X-Spam-Detected:.*
+$MAILDIR/spam
+
+:0
+* ^(Mailing-List: |Sender: owner-|X-BeenThere: |Delivered-To: mailing-list |X-Mailing-List: <|X-Loop: |X-List-ID: <|X-list: |X-ML-Name: )\/[^@\.]+
+{
+        LISTNAME=`echo $MATCH | sed -e 's/[\/]/_/g'`
+
+        :0c
+        | /Users/jaybuff/bin/notify_of_mail.pl "[$LISTNAME] "
+
+        :0:
+        $MAILDIR/$LISTNAME
+}
+
+:0c
+| /Users/jaybuff/bin/notify_of_mail.pl 
+
+:0:
+$DEFAULT

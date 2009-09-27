@@ -1,0 +1,60 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Expect;
+use Proc::Daemon;
+#Proc::Daemon::Init;
+
+my $secure_id = shift or die "Usage: $0 \n";
+if ( $> != 0 ) {
+	die "You must run $0 as the root user\n";
+}
+
+# get the PIN from /etc/cisco_vpn_pin
+open my $fh, '/etc/cisco_vpn_pin' or die $!;
+<$fh> =~ /^(.*?):(.*)/;
+
+my $username = $1;
+my $password = $2 . $secure_id;
+
+print "got username $username and PIN XXXX from /etc/cisco_vpn_pin\n";
+
+# if you do not reload the kernel module after inserting the EVDO card you'll get this error:
+# Could not attach to driver. Is kernel module loaded?
+# because of this you need to run this command (as root)
+print `/System/Library/StartupItems/CiscoVPN/CiscoVPN restart`;
+
+# give it a sec...
+sleep 1;
+
+my $exp = Expect->spawn( 'vpnclient', 'connect', 'sunnyvale' ) or die "Cannot spawn vpnclient: $!\n";
+
+$exp->expect( 20, [ qr/Username \[\]:/ => sub { $exp->send("$username\n"); }, ], );
+$exp->expect( 5, [ qr/Passcode \[\]:/ => sub { $exp->send("$password\n"); }, ], );
+
+    $exp->expect(
+	5,
+	[
+		qr/Your VPN connection is secure./ => sub {
+			growl("Connected to VPN");
+		},
+	],
+	[
+		qr/Username \[\]:/ => sub {
+            my $message = "Connecting to VPN failed (wrong rsa key?)";
+            growl($message);
+            die $message;
+		},
+	],
+);
+
+$exp->expect(undef);
+
+growl("VPN Disconnected");
+
+sub growl {
+	my $m = shift;
+	system( 'growlnotify -m "' . $m . '" vpnup' );
+}
