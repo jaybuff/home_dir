@@ -9,3 +9,4 @@ mv ~/.ssh ~/.ssh.bck && mv ~/config.git/* ~/
 mv ~/.ssh.bck/id_dsa ~/.ssh/
 rm -rf ~/.ssh.bck
 rmdir ~/config.git
+source ~/.bash_profile
