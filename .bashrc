@@ -3,6 +3,7 @@ export PATH=$PATH:/usr/local/bin:/sw/bin:/opt/local/bin:/opt/subversion/bin:/usr
 export EDITOR=vim
 
 # Setup Amazon EC2 Command-Line Tools
+export AWS_ELB_HOME=~/.ec2
 export EC2_HOME=~/.ec2
 if test -d $EC2_HOME; then 
     export PATH=$PATH:$EC2_HOME/bin
