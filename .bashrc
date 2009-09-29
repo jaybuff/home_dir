@@ -1,6 +1,3 @@
-export PATH=$PATH:/usr/local/bin:/sw/bin:/opt/local/bin:/opt/subversion/bin:/usr/local/share/coverity/prevent/bin/:/usr/local/git/bin/
-
-export EDITOR=vim
 
 # Setup Amazon EC2 Command-Line Tools
 export AWS_ELB_HOME=~/.ec2
@@ -12,4 +9,67 @@ if test -d $EC2_HOME; then
     export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 fi
 
+
+# PROMPT
+if [ "$PS1" != "" ]
+then
+    PS1="\h \t \W \$ "
+      setenv ()  { export $1="$2"; }
+    unsetenv ()  { unset $*; }
+fi
+
+# set a variable that can be used in the prompt string to show that an error occurs.
+export PROMPT_COMMAND='a=$?; if [ $a -ne 0 ] ; then export ERROR_MSG="[EXIT $a] "; else ERROR_MSG=""; fi'
+
+# set prompt to include the yroot if we're in one
+# put the user, hostname and directory in a format that can be copied to SCP
+# and include the ERROR_MSG variable that gets set in PROMPT_COMMAND
+if [ "x$YROOT_NAME" != "x" ]; then
+    export PS1="[\u@\H =>$YROOT_NAME<= \W]\n\$ERROR_MSG \t \\$ "
+else
+    export PS1="\u@\H:\w\n\$ERROR_MSG \t \$ "
+fi
+
+
+# ssh configuration
+# alias scp and scp to yssh if available
+if [ -x "/usr/local/bin/yssh" ] ; then
+    alias ssh=yssh
+    alias find-agent=yssh
+    export SVN_SSH=yssh
+fi
+
+# source host profiles
+PROFILES="$HOME/.login_profiles"
+host=`/bin/hostname`
+profile="$PROFILES/$host"
+if [ -f "$profile" ]
+then
+    source $profile
+fi
+
+
+# use a different perltidyrc based on what directory you're in
+if test -x /home/y/bin/perltidy-config-dirtree; then
+    alias perltidy=perltidy-config-dirtree
+fi
+
+if test -d /home/y; then
+    export PATH=$PATH:/home/y/bin
+fi
+export PATH=$PATH:/usr/local/bin:$HOME/bin
+
+shopt -s checkwinsize
+
+alias cx="chmod +x"
 alias config="git --git-dir=$HOME/.config.git/ --work-tree=$HOME"
+alias bugs="ybug ns cse-open -Tbbrief"
+
+export TERM=linux
+export COLORFGBG="white;black"
+export EDITOR=vim
+
+export TWED_EDITOR=vim
+export S=svn+ssh://svn.corp.yahoo.com/
+export NANOOK_CC_URL=http://cc.int.c.pool.corp.sp2.yahoo.com:4080
+export IMGTOOL_URL=http://x4.cs-lab.pool.corp.pd1.yahoo.com:4080
