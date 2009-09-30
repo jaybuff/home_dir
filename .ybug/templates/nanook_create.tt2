@@ -1,0 +1,26 @@
+@short_desc = [% data.short_desc %]
+@comment = [% data.comment %]
+
+@product = [% data.product || "y!cloud" %]
+
+YBUG: @component = cloudhub - general
+YBUG: @component = nanook - cluster controller
+YBUG: @component = nanook - node controller
+YBUG: @component = nanook - images
+YBUG: @component = nanook - rest
+@component = [% component_name || "nanook - general" %]
+@cc = [% data.cc.join(",") %]
+
+[%- SET header_printed=0 %]
+[% SET skip = ["short_desc", "comment", "product", "component", "cc"] -%]
+[%- FOREACH f IN fields.unique -%]
+   [%- NEXT IF skip.grep("^$f\$").size -%]
+   [%- IF opts.$f -%]
+      [%- IF !header_printed -%]
+YBUG: note these params were automatically added because of command
+YBUG: line paramaters or config file paramaters
+         [% SET header_printed=1 %]
+      [%- END %]
+@[% f %] = [% opts.$f %]
+   [%- END -%]
+[%- END -%]

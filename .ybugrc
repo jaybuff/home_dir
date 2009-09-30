@@ -1,0 +1,5 @@
+#edit: 1
+#debug: 1
+
+create_bug_template: nanook_create
+#bugzilla_host: http://beta.bug.corp.yahoo.com
