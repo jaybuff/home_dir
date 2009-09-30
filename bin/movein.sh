@@ -12,6 +12,7 @@ fi
 
 HOMEDIR_TMPDIR=`mktemp -d /tmp/homedirXXXXXX`
 git clone git@github.com:jaybuff/home_dir.git $HOMEDIR_TMPDIR
+mv $HOMEDIR_TMPDIR/.git $HOMEDIR_TMPDIR/.config.git
 shopt -s dotglob
 scp -p -r -o StrictHostKeyChecking=no $HOMEDIR_TMPDIR/* $DEST_HOST:~/
 rm -rf $HOMEDIR_TMPDIR
