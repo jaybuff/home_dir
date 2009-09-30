@@ -22,4 +22,5 @@ until [[ `echo "" |nc -w 1 $EC2_HOSTNAME 22` ]]; do
 done
 echo
 
-exec ~/bin/ec2-movein.sh $EC2_HOSTNAME
+~/bin/create-remote-acct.sh $EC2_HOSTNAME
+~/bin/movein.sh $EC2_HOSTNAME
