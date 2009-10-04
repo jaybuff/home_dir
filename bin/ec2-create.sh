@@ -16,11 +16,6 @@ done
 echo
 echo $EC2_HOSTNAME
 
-echo -ne "Waiting for ssh to become available"
-until [[ `echo "" |nc -w 1 $EC2_HOSTNAME 22` ]]; do 
-    echo -ne "."
-done
-echo
-
+~/bin/wait-for-ssh.sh $EC2_HOSTNAME
 ~/bin/create-remote-acct.sh $EC2_HOSTNAME
 ~/bin/movein.sh $EC2_HOSTNAME
