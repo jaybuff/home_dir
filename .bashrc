@@ -73,3 +73,5 @@ export TWED_EDITOR=vim
 export S=svn+ssh://svn.corp.yahoo.com/
 export NANOOK_CC_URL=http://cc.int.c.pool.corp.sp2.yahoo.com:4080
 export IMGTOOL_URL=http://x4.cs-lab.pool.corp.pd1.yahoo.com:4080
+
+#alias dnsdb="DNSDBUSER=`sudo keydbgetkey cse_headless.username` DNSDBPASS=`sudo keydbgetkey cse_headless.password` /home/y/bin/dnsdb --use_env_creds"
