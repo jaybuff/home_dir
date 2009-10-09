@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# this script lives on github at http://github.com/jaybuff/home_dir/blob/master/bin/create-remote-acct.sh
+
 DEST_HOST=$1
 
 if [ "$DEST_HOST" == "" ]; then 
