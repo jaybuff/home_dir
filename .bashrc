@@ -6,7 +6,6 @@ if test -d $EC2_HOME; then
     export PATH=$PATH:$EC2_HOME/bin
     export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
     export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
-    export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 fi
 
 
@@ -74,4 +73,9 @@ export S=svn+ssh://svn.corp.yahoo.com/
 export NANOOK_CC_URL=http://cc.int.c.pool.corp.sp2.yahoo.com:4080
 export IMGTOOL_URL=http://x4.cs-lab.pool.corp.pd1.yahoo.com:4080
 
-#alias dnsdb="DNSDBUSER=`sudo keydbgetkey cse_headless.username` DNSDBPASS=`sudo keydbgetkey cse_headless.password` /home/y/bin/dnsdb --use_env_creds"
+# only do this on a mac
+if [ `uname` == "Darwin" ]; then
+    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+    export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
+fi
+
