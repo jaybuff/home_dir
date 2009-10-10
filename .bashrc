@@ -29,15 +29,6 @@ else
     export PS1="\u@\H:\w\n\$ERROR_MSG \t \$ "
 fi
 
-
-# ssh configuration
-# alias scp and scp to yssh if available
-if [ -x "/usr/local/bin/yssh" ] ; then
-    alias ssh=yssh
-    alias find-agent=yssh
-    export SVN_SSH=yssh
-fi
-
 # source host profiles
 PROFILES="$HOME/.login_profiles"
 host=`/bin/hostname`
