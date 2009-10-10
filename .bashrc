@@ -75,7 +75,7 @@ export IMGTOOL_URL=http://x4.cs-lab.pool.corp.pd1.yahoo.com:4080
 
 # only do this on a mac
 if [ `uname` == "Darwin" ]; then
-    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+    export PATH=$PATH:/opt/local/bin:/opt/local/sbin
     export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 fi
 
