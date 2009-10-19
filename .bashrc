@@ -68,5 +68,10 @@ export IMGTOOL_URL=http://x4.cs-lab.pool.corp.pd1.yahoo.com:4080
 if [ `uname` == "Darwin" ]; then
     export PATH=$PATH:/opt/local/bin:/opt/local/sbin
     export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
+
+    # sudo port install bash-completion
+    if [ -f /opt/local/etc/bash_completion ]; then
+        . /opt/local/etc/bash_completion
+    fi
 fi
 
