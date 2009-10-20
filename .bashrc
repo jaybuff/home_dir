@@ -73,5 +73,8 @@ if [ `uname` == "Darwin" ]; then
     if [ -f /opt/local/etc/bash_completion ]; then
         . /opt/local/etc/bash_completion
     fi
+
+    # to get docs from macports stuff
+    export MANPATH=/opt/local/share/man:$MANPATH
 fi
 
