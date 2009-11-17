@@ -76,5 +76,8 @@ if [ `uname` == "Darwin" ]; then
 
     # to get docs from macports stuff
     export MANPATH=/opt/local/share/man:$MANPATH
+
+    # so I can launch VLC from the command line
+    alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 fi
 
