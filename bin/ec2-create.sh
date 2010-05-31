@@ -2,8 +2,10 @@
 # make sure that ssh access is available:
 # ec2-authorize default -P tcp -t 22
 
-# 32 bit Ubuntu 9.04 Jaunty server from http://alestic.com/
-AMI_ID=ami-ed46a784
+set -x -e 
+
+# server Ubuntu 10.04 Lucid Canonical, ubuntu@ us-west1 
+AMI_ID=ami-c597c680
 KEYPAIR=jaybuffkey
 echo "Booting AMI $AMI_ID"
 INSTANCE_ID=`ec2-run-instances $AMI_ID -g webserver -g default -k $KEYPAIR |grep ^INSTANCE |awk '{print $2}'`

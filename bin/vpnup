@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/opt/local/bin/perl
 
 use strict;
 use warnings;
@@ -7,7 +7,7 @@ use Expect;
 use Proc::Daemon;
 #Proc::Daemon::Init;
 
-my $secure_id = shift or die "Usage: $0 \n";
+my $secure_id = shift or die "Usage: $0 <secure id>\n";
 if ( $> != 0 ) {
 	die "You must run $0 as the root user\n";
 }

@@ -1,4 +1,3 @@
-
 # Setup Amazon EC2 Command-Line Tools
 export AWS_ELB_HOME=~/.ec2
 export EC2_HOME=~/.ec2
@@ -52,7 +51,7 @@ export PATH=$PATH:/usr/local/bin:$HOME/bin
 shopt -s checkwinsize
 
 alias cx="chmod +x"
-alias config="git --git-dir=$HOME/.config.git/ --work-tree=$HOME"
+alias homedir="git --git-dir=$HOME/.config.git/ --work-tree=$HOME"
 alias bugs="ybug ns cse-open -Tbbrief"
 
 export TERM=linux
@@ -61,8 +60,6 @@ export EDITOR=vim
 
 export TWED_EDITOR=vim
 export S=svn+ssh://svn.corp.yahoo.com/
-export NANOOK_CC_URL=http://cc.int.c.pool.corp.sp2.yahoo.com:4080
-export IMGTOOL_URL=http://x4.cs-lab.pool.corp.pd1.yahoo.com:4080
 
 # only do this on a mac
 if [ `uname` == "Darwin" ]; then

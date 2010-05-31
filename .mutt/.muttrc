@@ -64,15 +64,6 @@ set fast_reply               # don't prompt for recipients on reply/forward
 set forward_format="FW: %s"         # subject line for forwarded email
 
 # ---------------------
-# Printing
-# ---------------------
-
-set print_command='a2ps -o- | /usr/bin/lpr -h -P$PRINTER'
-
-set print="ask-no"                  # ask before printing
-set print_decode="yes"              # decode messages before printing
-
-# ---------------------
 # Aliases
 # ---------------------
 
@@ -190,59 +181,6 @@ macro index <esc>c <change-folder>
 macro index <esc>s <save-message>
 macro pager <esc>s <save-message>
 
-### MOVE AND GOTO MACROS
-# USE c and s to save to specific folders
-# Folder assignments: 
-# use 'mutt-folder-aliaser.pl' to generate new entries (or regen everything)
-# you can pipe one new entry through the file, or pipe the section through it.
-
-#    g     -> +reference/g-support
-#    G     -> +reference/G-support-old
-#    h     -> +Inbox
-#    p     -> +reference/p-poolboy
-#    P     -> +reference/P-poolboy-old
-#    ss    -> +Sent
-#    Z     last month's mail
-#    z     recent mail
-
-#    raa   -> /homes/jdagnall/log/all_mail
-#    rbb   -> +reference/rb-bugzilla
-#    rcv   -> +reference/rcv-ycvs
-#    rdd   -> +reference/rd-devel
-#    rdh   -> +reference/rdh-devel-help
-#    ree   -> +reference/ree-resumes
-#    rff   -> +reference/rf-forsale
-#    rgg   -> +reference/rgg-general
-#    rgt   -> +reference/rgtd-gettingthingsdone
-#    rhh   -> +reference/rhh-hudson
-#    rig   -> +reference/rig-igor
-#    rii   => +reference/rii-integration
-#    rpa   -> +reference/rpa-parents
-#    rph   -> +reference/rph-yphotography
-#    rrb   -> +reference/rrb-requests-bz
-#    rro   -> +reference/rro-rose
-#    rrv   -> +reference/rrv-requests-vault
-#    rtt   -> +reference/rtt-team
-#    rtw   -> +reference/rtw-twiki
-#    rvk   -> +reference/rvk-viking-table
-#    rvm   -> +reference/rvm-vim
-#    rvv   -> +reference/rv-vault
-#    ryf   -> +references/yyf-yforge
-#    ryy   -> +reference/ryy-yahoo
-
-#    aae   -> imaps://jud@thedagnalls.com/aae-actions-errands
-#    aca   -> imaps://jud@thedagnalls.com/aca-actions-calls
-#    acc   -> imaps://jud@thedagnalls.com/acc-actions-computer
-#    ach   -> imaps://jud@thedagnalls.com/acw-actions-computer-home
-#    acw   -> imaps://jud@thedagnalls.com/acw-actions-computer-work
-#    ahh   -> imaps://jud@thedagnalls.com/ahh-actions-home
-#    arr   -> imaps://jud@thedagnalls.com/arr-actions-read-review
-#    awf   -> imaps://jud@thedagnalls.com/awf-actions-waiting-for
-#    aww   -> imaps://jud@thedagnalls.com/aww-actions-work
-#    ay    -> imaps://jud@thedagnalls.com/ay-actions-anywhere
-#    bzr   -> imaps://jud@thedagnalls.com/project-support/bzr-reporting
-#    caa   -> imaps://jud@thedagnalls.com/caa-completed-actions
-#    j     -> imaps://jud@thedagnalls.com/INBOX
 
 # ---------------------------------
 # BEGIN folder shortcut definitions
@@ -297,9 +235,9 @@ set mime_forward="ask-yes"
 # ---------------------
 
 # how to send mail
-#set sendmail="/usr/sbin/sendmail -oem -oi"
+set sendmail="/usr/sbin/sendmail -oem -oi"
 
-set smtp_url="smtp://smtp.yahoo.com"
+#set smtp_url="smtp://smtp.yahoo.com"
 
 
 # editors
@@ -341,8 +279,8 @@ folder-hook Sent         set sort=date
 mailboxes =inbox =all-worldwide =devel-announce =devel-perl =mac-users =nanook-devel =cloudserver-devel =spicy-lunch =reviewboard-users =reviewboard-devel =ycloud-leads
 
 # b toggles sidebar visibility
-macro index b '<enter-command>toggle sidebar_visible<enter>'
-macro pager b '<enter-command>toggle sidebar_visible<enter>'
+#macro index b '<enter-command>toggle sidebar_visible<enter>'
+#macro pager b '<enter-command>toggle sidebar_visible<enter>'
 
 # Remap bounce-message function to "B"
 bind index B bounce-message
