@@ -1,6 +1,12 @@
 #!/bin/bash
 
 # this script lives on github at http://github.com/jaybuff/home_dir/blob/master/bin/create-remote-acct.sh
+#
+# I use it like this:
+# bin/create-remote-acct.sh ubuntu@ec2-75-101-196-155.compute-1.amazonaws.com
+
+
+set -x -e 
 
 DEST_HOST=$1
 
@@ -11,4 +17,4 @@ fi
 
 echo "Creating account for $USER on $DEST_HOST and adding to /etc/sudoers"
 SSH_OPTIONS="-o StrictHostKeyChecking=no"
-ssh root@$DEST_HOST $SSH_OPTIONS "adduser $USER --disabled-password --gecos 1 && echo '$USER ALL=NOPASSWD: ALL' >> /etc/sudoers"
+ssh $DEST_HOST $SSH_OPTIONS "sudo adduser $USER --disabled-password --gecos 1 && echo '$USER ALL=NOPASSWD: ALL' | sudo tee -a /etc/sudoers"
