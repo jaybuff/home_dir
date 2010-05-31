@@ -16,3 +16,5 @@ EC2_HOSTNAME=`$DIR/ec2-hostname-from-instance-id.sh $INSTANCE_ID`
 $DIR/wait-for-ssh.sh $EC2_HOSTNAME
 $DIR/create-remote-acct.sh ubuntu@$EC2_HOSTNAME
 $DIR/movein.sh ubuntu@$EC2_HOSTNAME
+
+echo "Created $EC2_HOSTNAME"

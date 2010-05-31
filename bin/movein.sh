@@ -26,5 +26,5 @@ fi
 HOMEDIR_TMPDIR=`mktemp -d /tmp/homedirXXXXXX`
 git clone git@github.com:jaybuff/home_dir.git $HOMEDIR_TMPDIR
 mv $HOMEDIR_TMPDIR/.git $HOMEDIR_TMPDIR/.config.git
-pushd $HOMEDIR_TMPDIR && tar -cf - ./ | $SSH_CMD $DEST_HOST "sudo -u $USER tar -xf - -C ~$USER && popd
+pushd $HOMEDIR_TMPDIR && tar -cf - ./ | $SSH_CMD $DEST_HOST "sudo -u $USER tar -xf - -C ~$USER" && popd
 rm -rf $HOMEDIR_TMPDIR
