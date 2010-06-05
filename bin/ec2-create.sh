@@ -14,6 +14,10 @@ echo "Started $INSTANCE_ID  Getting host name\n"
 DIR=`dirname $0`
 EC2_HOSTNAME=`$DIR/ec2-hostname-from-instance-id.sh $INSTANCE_ID`
 $DIR/wait-for-ssh.sh $EC2_HOSTNAME
+
+# sleep just sec to be sure
+sleep 3;
+
 $DIR/create-remote-acct.sh ubuntu@$EC2_HOSTNAME
 $DIR/movein.sh ubuntu@$EC2_HOSTNAME
 
