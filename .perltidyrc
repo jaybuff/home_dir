@@ -1,7 +1,6 @@
 -l=130      # 130 column lines
 -i=4        # 4 column indents
 -ci=2       # continuation indentation: 2
--et=4       # Use tabs for leading whitespace
 -olc        # outdent long comments to fit
 -st         # output to stdout  (for editor macros)
 -se         # output errors to stderr
