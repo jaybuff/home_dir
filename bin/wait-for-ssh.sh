@@ -6,8 +6,6 @@
 # this script is originally from
 # http://github.com/jaybuff/home_dir/blob/master/bin/wait-for-ssh.sh
 
-set -x -e
-
 DEST_HOST=$1
 
 if [ "$DEST_HOST" == "" ]; then
