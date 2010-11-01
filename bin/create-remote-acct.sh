@@ -17,4 +17,4 @@ fi
 
 echo "Creating account for $USER on $DEST_HOST and adding to /etc/sudoers"
 SSH_OPTIONS="-o StrictHostKeyChecking=no"
-ssh $DEST_HOST $SSH_OPTIONS "sudo adduser $USER --disabled-password --gecos 1 --no-create-home && echo '$USER ALL=NOPASSWD: ALL' | sudo tee -a /etc/sudoers"
+ssh $DEST_HOST $SSH_OPTIONS "sudo adduser $USER --disabled-password --gecos 1 --no-create-home && echo '$USER ALL=(ALL) NOPASSWD:ALL' | sudo tee -a /etc/sudoers"
