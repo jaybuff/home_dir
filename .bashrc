@@ -29,11 +29,9 @@ else
 fi
 
 # source host profiles
-PROFILES="$HOME/.login_profiles"
 host=`/bin/hostname`
-profile="$PROFILES/$host"
-if [ -f "$profile" ]
-then
+profile="$HOME/.login_profiles/$host"
+if [ -f "$profile" ]; then
     source $profile
 fi
 
