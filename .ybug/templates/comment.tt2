@@ -1,6 +1,0 @@
-[% FOREACH b=list %]
-    [%# FOREACH comment = b.long_desc %]
-        [% b.long_desc.0.thetext %]
-    [%# END %]
-[% END %]
-

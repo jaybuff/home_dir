@@ -1,3 +1,0 @@
-[% FOREACH b=list %]
-[% b.bug_id %] [% opts.bugzilla_host _ '/' _ b.bug_id  %] [% b.short_short_desc -%]
-[% END %]
