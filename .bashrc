@@ -63,8 +63,30 @@ if [ `uname` == "Darwin" ]; then
     export MANPATH=/opt/local/share/man:$MANPATH
 
     # so I can launch VLC from the command line
-    if [ -f /Applications/VLC.app/Contents/MacOS/VLC]; then
+    if [ -f /Applications/VLC.app/Contents/MacOS/VLC ]; then
         alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
     fi
 fi
 
+
+# start the ssh agent and source the settings
+SSH_ENV="$HOME/.ssh/environment"
+
+function start_agent {
+     echo "Starting new SSH agent..."
+     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+     chmod 600 "${SSH_ENV}"
+     . "${SSH_ENV}" > /dev/null
+     /usr/bin/ssh-add;
+}
+
+# Source SSH settings, if applicable
+
+if [ -f "${SSH_ENV}" ]; then
+     . "${SSH_ENV}" > /dev/null
+     ps -x | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+         start_agent;
+     }
+else
+     start_agent;
+fi
