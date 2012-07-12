@@ -1,7 +1,7 @@
 # Setup Amazon EC2 Command-Line Tools
 export AWS_ELB_HOME=~/.ec2
 export EC2_HOME=~/.ec2
-if test -d $EC2_HOME; then 
+if test -d $EC2_HOME; then
     export PATH=$PATH:$EC2_HOME/bin
     export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
     export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
@@ -48,8 +48,8 @@ export EDITOR=vim
 # only do this on a mac
 if [ `uname` == "Darwin" ]; then
 
-    # look for binaries installed by mac ports before other dirs
-    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+    # look for binaries installed by mac ports after other dirs
+    export PATH=$PATH:/opt/local/bin:/opt/local/sbin
     export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 
     # sudo port install bash-completion
@@ -88,3 +88,9 @@ if [ -f "${SSH_ENV}" ]; then
 else
      start_agent;
 fi
+
+alias json="python -m json.tool"
+
+alias jira="geera"
+alias gerrit="ssh gerrit -p 29418 gerrit"
+export PERL5LIB=/Users/jbuffington/joot/lib
