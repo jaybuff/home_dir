@@ -1,0 +1,151 @@
+#!/usr/bin/env perl
+    
+use strict;
+use warnings;
+    
+use File::Temp;           
+use IPC::Open3;           
+use IO::Handle;           
+use Term::ANSIColor;
+use Getopt::Long;
+use POSIX qw(setsid);
+    
+my $vb_app_path = $ENV{VBOX_APP_HOME} ||
+                  '/Applications/VirtualBox.app/Contents/MacOS';
+my $vb_cmd = $vb_app_path . '/VBoxManage';
+my $vb_hcmd = $vb_app_path . '/VBoxHeadless';
+    
+my $opts = {};
+my $cmds = {};
+    
+GetOptions(
+           'verbose|v+' => \$opts->{verbose},
+           'start'      => \$cmds->{start},
+           'starth'     => \$cmds->{starth},
+           'stop'       => \$cmds->{stop},
+           'reset'      => \$cmds->{reset},
+           'list'       => \$cmds->{list},
+           'help'       => \$cmds->{help}
+) || usage(1);
+if ( $ARGV[0] && $ARGV[0] =~ /^(start|starth|stop|reset|list|help)/i ) {
+  $cmds->{shift @ARGV}++;
+} 
+if    ( $cmds->{help} ) {
+  usage(0);
+}      
+elsif ( $cmds->{start} ) {
+  my $id = shift @ARGV;
+  $id || usage(1);
+  print run( $vb_cmd, 'startvm', $id, );
+}
+elsif ( $cmds->{starth} ) {
+  my $id = shift @ARGV;
+  $id || usage(1);
+  my $pf = '/tmp/' . $id . '.FIFO';
+  run( $vb_cmd, 'modifyvm', $id, '--uart1 0x3f8 4' );
+  run( $vb_cmd, 'modifyvm', $id, '--uartmode1 server', $pf );
+  #run( $vb_cmd, 'controlvm', $id, 'natpf1 ssh,tcp,,2222,,22' );
+  
+  my $pid = fork();
+  if ( ! $pid ) {
+    POSIX::setsid();
+    close(STDIN);
+    close(STDOUT);
+    close(STDERR);
+    exec( $vb_hcmd, '--startvm', $id, '--vrde=off' );
+  } 
+  sleep(2);
+  exec "socat UNIX:$pf STDIO,raw,echo=0,escape=0x1d"; 
+} 
+elsif ( $cmds->{stop} ) {
+  my $id = shift @ARGV;
+  $id || usage(1);
+  #run( $vb_cmd, 'controlvm', $id, 'natpf1 delete ssh' );
+  print run( $vb_cmd, 'controlvm', $id, 'poweroff' );
+} 
+elsif ( $cmds->{restart} ) {
+  my $id = shift @ARGV;
+  $id || usage(1); 
+  print run( $vb_cmd, 'controlvm', $id, 'reset' );
+} 
+elsif ( $cmds->{list} ) {
+  my $vms;
+  foreach my $vm ( run( $vb_cmd, 'list', 'vms' ) ) {
+    my $vmi;
+    $vm =~ m|\A"(\w+)"\s+{([-\w]+)}\z|xm;
+    ( $vmi->{label}, $vmi->{uuid} ) = ( $1, $2 );
+    foreach my $kv ( run( $vb_cmd,
+                          'showvminfo',
+                          $vmi->{uuid},
+                          '--machinereadable') ) {
+      $kv =~ m|\A(\S+)="(\S+)"\z|xm;
+      $vmi->{$1} = $2;
+    }
+    push @$vms, $vmi;
+  }
+  foreach my $entry ( @$vms ) {
+    print "VM Name:";
+    print colored ( $entry->{label}, 'bold white' ), "\t";
+    my $sc = ( $entry->{VMState} eq 'running' ) ? 'green' : 'red';
+    print "State:";
+    print colored ( $entry->{VMState}, 'bold ' . $sc ), "\t";
+    print "GuestOS:";
+    print colored ( $entry->{GuestOSType}, 'bold yellow'), "\n";
+  }
+#  use Data::Dumper;
+#  print Dumper $vms;
+}
+
+exit(0);
+
+sub usage {
+  my $exit = shift;
+  my $out = $exit ? \*STDERR : \*STDOUT;
+  print $out <<EOM;
+Usage: vbm <command> <options>
+       vbm start
+       vbm stop
+       vbm restart
+       vbm list
+       vbm help
+
+Global Options:
+  --verbose:            toggle verbose output
+EOM
+  exit($exit);
+}
+
+sub slurp {
+  my $fn = shift;
+  open my $fh, "$fn" or die "Could not open $fn: $!";
+  return <$fh> if wantarray;
+  local $/;
+  return <$fh>;
+}
+
+sub run {
+  my $cmd = join( ' ', @_ );
+#  print "DEBUG: $cmd \n";
+  my ( $out, $out_fn ) = File::Temp::tempfile( UNLINK => 1 );
+  my ( $err, $err_fn ) = File::Temp::tempfile( UNLINK => 1 );
+  my $pid = IPC::Open3::open3( undef, ">&" . fileno($out), ">&" . fileno($err), $cmd );
+  waitpid( $pid, 0 );
+  close( $out );
+  close( $err );
+  my $outstr = slurp( $out_fn );
+  my $errstr = slurp( $err_fn );
+  my $status = $? >> 8;
+  if ( $? == 0 ) {
+    return split ( /\n/, $outstr ) if wantarray;
+    return $outstr if defined wantarray;
+    return;
+  }
+  die <<EOM;
+"Command '$cmd' exited with code $status.
+------------- STDOUT -------------
+$outstr
+------------- STDERR -------------
+$errstr
+EOM
+}
+
