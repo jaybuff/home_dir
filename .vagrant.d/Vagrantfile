@@ -1,11 +1,15 @@
 Vagrant::Config.run do |config|
+  config.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+
+  # see my comment regarding mounting home dirs and using custom user at
+  # https://groups.google.com/forum/?fromgroups#!searchin/vagrant-up/config.ssh.username/vagrant-up/5vWiQgweYdI/OcfH7M_kzAoJ
+  config.vm.share_folder "jaybuff-home", "/home/jaybuff", "/Users/jaybuff", :owner=> 'jaybuff', :group=>'jaybuff'
   config.ssh.username = "jaybuff"
 
-  config.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  config.vm.share_folder "jaybuff-home", "/home/jaybuff", "/Users/jaybuff", :owner=> 'jaybuff', :group=>'jaybuff'
   config.ssh.forward_agent = true
   config.vm.box = "ol6u3"
 
   config.vm.define :keystone
   config.vm.define :build
+  config.vm.define :new
 end

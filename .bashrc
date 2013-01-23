@@ -7,26 +7,9 @@ if test -d $EC2_HOME; then
     export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
 fi
 
-
-# PROMPT
-if [ "$PS1" != "" ]
-then
-    PS1="\h \t \W \$ "
-      setenv ()  { export $1="$2"; }
-    unsetenv ()  { unset $*; }
-fi
-
 # set a variable that can be used in the prompt string to show that an error occurs.
 export PROMPT_COMMAND='a=$?; if [ $a -ne 0 ] ; then export ERROR_MSG="[EXIT $a] "; else ERROR_MSG=""; fi'
-
-# set prompt to include the joot (see github.com/jaybuff/joot) if we're in one
-# put the user, hostname and directory in a format that can be copied to SCP
-# and include the ERROR_MSG variable that gets set in PROMPT_COMMAND
-if [ "x$JOOT_NAME" != "x" ]; then
-    export PS1="[\u@\H =>$JOOT_NAME<= \W]\n\$ERROR_MSG \t \\$ "
-else
-    export PS1="\u@\H:\w\n\$ERROR_MSG \t \$ "
-fi
+export PS1="\t \u@\H:\w\n\$ERROR_MSG\$ "
 
 # source host profiles
 host=`/bin/hostname`

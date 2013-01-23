@@ -20,3 +20,9 @@ match OverLength /\%81v.\+/
 
 " remove trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
+
+" for evervim (evernote plugin)
+
+let $PYTHONPATH='/Users/jaybuff/.vim/plugin/py'
+let g:evervim_devtoken='S=s103:U=1228bda:E=142968175cf:C=13b3ed049cf:P=1cd:A=en-devtoken:H=06235083e1ccc3d3de8cb584ed11a11f'
+
