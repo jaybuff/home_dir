@@ -10,5 +10,6 @@
 [core]
 	excludesfile = ~/.gitignore
 	editor = vim
+	pager = less -r
 [merge]
 	tool = opendiff
