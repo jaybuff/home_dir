@@ -67,7 +67,4 @@ if [ `uname` == "Darwin" ]; then
 fi
 
 alias json="python -m json.tool"
-
-alias jira="geera"
 alias gerrit="ssh gerrit -p 29418 gerrit"
-export PERL5LIB=/Users/jbuffington/joot/lib
