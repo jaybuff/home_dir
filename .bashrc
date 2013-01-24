@@ -9,7 +9,7 @@ fi
 
 # set a variable that can be used in the prompt string to show that an error occurs.
 export PROMPT_COMMAND='a=$?; if [ $a -ne 0 ] ; then export ERROR_MSG="[EXIT $a] "; else ERROR_MSG=""; fi'
-export PS1="\t \u@\H:\w\n\$ERROR_MSG\$ "
+export PS1='\t \u@\H:\w$(git branch &>/dev/null; if [ $? -eq 0 ]; then echo " ($(git branch | grep ^* |sed s/\*\ //))"; fi)\n$ERROR_MSG$ '
 
 # source host profiles
 host=`/bin/hostname`
@@ -51,3 +51,10 @@ fi
 
 alias json="python -m json.tool"
 alias gerrit="ssh gerrit -p 29418 gerrit"
+
+function cd() {
+    builtin cd $* &&
+    if [ -d ".git" ]; then
+        git status
+    fi
+}
