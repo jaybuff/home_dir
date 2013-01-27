@@ -2,9 +2,14 @@ Vagrant::Config.run do |config|
   config.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
 
   # see my comment regarding mounting home dirs and using custom user at
-  # https://groups.google.com/forum/?fromgroups#!searchin/vagrant-up/config.ssh.username/vagrant-up/5vWiQgweYdI/OcfH7M_kzAoJ
+  # https://groups.google.com/d/topic/vagrant-up/5vWiQgweYdI/discussion
   config.vm.share_folder "jaybuff-home", "/home/jaybuff", "/Users/jaybuff", :owner=> 'jaybuff', :group=>'jaybuff'
   config.ssh.username = "jaybuff"
+
+  # ludicrous - this is needed or you won't be able to create symlinks
+  # in mounted home directory
+  # https://www.virtualbox.org/ticket/10085
+  config.vm.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/jaybuff-home", "1"]
 
   config.ssh.forward_agent = true
   config.vm.box = "ol6u3"
