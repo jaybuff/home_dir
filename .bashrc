@@ -55,6 +55,26 @@ alias gerrit="ssh gerrit -p 29418 gerrit"
 function cd() {
     builtin cd $* &&
     if [ -d ".git" ]; then
+        # it'd be nice if i did git fetch first so this would say how far behind
+        # origin I am
         git status
     fi
 }
+
+# Colorise less
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
+# http://blog.sanctum.geek.nz/better-bash-history/
+shopt -s histappend
+HISTFILESIZE=1000000
+HISTSIZE=1000000
+HISTTIMEFORMAT='%F %T '
+
+# fix spelling errors for cd, only in interactive shell
+shopt -s cdspell
