@@ -1,5 +1,5 @@
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set expandtab               " insert spaces instead of tabs
 set showmatch
 set incsearch
@@ -25,4 +25,6 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 let $PYTHONPATH='/Users/jaybuff/.vim/plugin/py'
 let g:evervim_devtoken='S=s103:U=1228bda:E=142968175cf:C=13b3ed049cf:P=1cd:A=en-devtoken:H=06235083e1ccc3d3de8cb584ed11a11f'
+
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 

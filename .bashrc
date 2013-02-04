@@ -78,3 +78,5 @@ HISTTIMEFORMAT='%F %T '
 
 # fix spelling errors for cd, only in interactive shell
 shopt -s cdspell
+
+export PYTHONSTARTUP=~/.pystartup

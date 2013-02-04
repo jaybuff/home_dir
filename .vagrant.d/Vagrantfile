@@ -14,7 +14,10 @@ Vagrant::Config.run do |config|
   config.ssh.forward_agent = true
   config.vm.box = "ol6u3"
 
-  config.vm.define :keystone
-  config.vm.define :build
-  config.vm.define :new
+  %w(keystone glance build new).each do |name|
+      config.vm.define name do |named_vm|
+        named_vm.vm.host_name = name
+      end
+  end
+
 end
