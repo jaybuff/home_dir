@@ -9,7 +9,14 @@ fi
 
 # set a variable that can be used in the prompt string to show that an error occurs.
 export PROMPT_COMMAND='a=$?; if [ $a -ne 0 ] ; then export ERROR_MSG="[EXIT $a] "; else ERROR_MSG=""; fi'
-export PS1='\t \u@\H:\w$(git branch &>/dev/null; if [ $? -eq 0 ]; then echo " ($(git branch | grep ^* |sed s/\*\ //))"; fi)\n$ERROR_MSG$ '
+
+#export GIT_PS1_SHOWDIRTYSTATE=1
+#export GIT_PS1_SHOWSTASHSTATE=1
+#export GIT_PS1_SHOWUPSTREAM="auto"
+#export GIT_PS1_SHOWCOLORHINTS=1
+#export GIT_PS1_SHOWUNTRACKEDFILES=1
+source ~/.git-prompt.sh
+export PS1='\t \u@\H:\w$(__git_ps1 " (%s)")\n$ERROR_MSG$ '
 
 # source host profiles
 host=`/bin/hostname`
@@ -80,3 +87,13 @@ HISTTIMEFORMAT='%F %T '
 shopt -s cdspell
 
 export PYTHONSTARTUP=~/.pystartup
+
+source ~/.git-completion.bash
+source ~/.vagrant.d/bash-completion
+
+export NOSE_WITH_OPENSTACK=1
+export NOSE_OPENSTACK_COLOR=1
+export NOSE_OPENSTACK_RED=0.05
+export NOSE_OPENSTACK_YELLOW=0.025
+export NOSE_OPENSTACK_SHOW_ELAPSED=1
+export NOSE_OPENSTACK_STDOUT=1
