@@ -27,7 +27,7 @@ if [ -f "$profile" ]; then
     source $profile
 fi
 
-export PATH=$PATH:/usr/local/bin:$HOME/bin
+export PATH=/usr/local/csi/bin:$PATH:/usr/local/bin:$HOME/bin
 
 shopt -s checkwinsize
 
