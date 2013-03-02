@@ -15,8 +15,10 @@ export PROMPT_COMMAND='a=$?; if [ $a -ne 0 ] ; then export ERROR_MSG="[EXIT $a] 
 #export GIT_PS1_SHOWUPSTREAM="auto"
 #export GIT_PS1_SHOWCOLORHINTS=1
 #export GIT_PS1_SHOWUNTRACKEDFILES=1
-source ~/.git-prompt.sh
-export PS1='\t \u@\H:\w$(__git_ps1 " (%s)")\n$ERROR_MSG$ '
+if [ -f ~/.git-prompt.sh ]; then
+    source ~/.git-prompt.sh
+    export PS1='\t \u@\H:\w$(__git_ps1 " (%s)")\n$ERROR_MSG$ '
+fi
 
 # source host profiles
 host=`/bin/hostname`
@@ -86,10 +88,17 @@ HISTTIMEFORMAT='%F %T '
 # fix spelling errors for cd, only in interactive shell
 shopt -s cdspell
 
-export PYTHONSTARTUP=~/.pystartup
+if [ -f ~/.pystartup ]; then
+    export PYTHONSTARTUP=~/.pystartup
+fi
 
-source ~/.git-completion.bash
-source ~/.vagrant.d/bash-completion
+if [ -f ~/.git-completion.bash ]; then
+    source ~/.git-completion.bash
+fi
+
+if [ -f ~/.vagrant.d/bash-completion ]; then
+    source ~/.vagrant.d/bash-completion
+fi
 
 export NOSE_WITH_OPENSTACK=1
 export NOSE_OPENSTACK_COLOR=1
