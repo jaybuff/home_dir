@@ -108,3 +108,14 @@ export NOSE_OPENSTACK_SHOW_ELAPSED=1
 export NOSE_OPENSTACK_STDOUT=1
 
 export PUNGI_CACHEDIR=~/pungi-cache
+
+function vagrant() {
+    RUNDIR=~/.vagrant.d/vm-rundir
+    [[ -d $RUNDIR ]] || mkdir -p $RUNDIR
+    cd $RUNDIR
+    [[ -f Vagrantfile ]] || touch Vagrantfile
+    `which vagrant` $*
+    RC=$?
+    cd - > /dev/null
+    return $RC
+}
