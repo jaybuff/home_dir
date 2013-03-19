@@ -119,3 +119,8 @@ function vagrant() {
     cd - > /dev/null
     return $RC
 }
+
+function nova() {
+  test -z $ospasswd && echo -n "OS Password: " && read -s ospasswd
+  OS_PASSWORD=$ospasswd `which nova` --insecure $*
+}
