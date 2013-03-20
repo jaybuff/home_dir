@@ -121,6 +121,17 @@ function vagrant() {
 }
 
 function nova() {
-  test -z $ospasswd && echo -n "OS Password: " && read -s ospasswd
-  OS_PASSWORD=$ospasswd `which nova` --insecure $*
+    test -z $ospasswd && echo -n "OS Password: " && read -s ospasswd
+    OS_PASSWORD=$ospasswd `which nova` --insecure $*
+}
+
+function keystone() {
+    # only prepend --insecure if the user specified args
+    declare args
+    if [ $# -ne 0 ]; then
+        args="--insecure "
+    fi
+    args+=$*
+
+    command keystone $args
 }
