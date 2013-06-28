@@ -105,8 +105,15 @@ export NOSE_OPENSTACK_STDOUT=1
 
 export PUNGI_CACHEDIR=~/pungi-cache
 
+export VAGRANT_DEFAULT_PROVIDER="vmware_fusion"
+export OPENSTACK_PUPPET="~jaybuff/puppet"
+export CORE_PUPPET="~jaybuff/core-puppet"
+export ISG_PUPPET="~jaybuff/isg-puppet"
+export STACKINTHEBOX="~jaybuff/stackinthebox"
+
 function vagrant() {
-    RUNDIR=~/.vagrant.d/vm-rundir
+    RUNDIR=~/stackinthebox
+
     [[ -d $RUNDIR ]] || mkdir -p $RUNDIR
     cd $RUNDIR
     [[ -f Vagrantfile ]] || touch Vagrantfile
