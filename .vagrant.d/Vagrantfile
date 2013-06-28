@@ -14,9 +14,12 @@ Vagrant::Config.run do |config|
   config.ssh.forward_agent = true
   config.vm.box = "ol6u3"
 
-  %w(keystone glance build new).each do |name|
+  %w(horizon ovs-build quantum-test quantum keystone glance build new keystone-test glance-test nova nova-test).each do |name|
       config.vm.define name do |named_vm|
         named_vm.vm.host_name = name
+        if name == "horizon"
+            named_vm.vm.forward_port 8080, 8080
+        end
       end
   end
 
