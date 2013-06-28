@@ -92,13 +92,9 @@ if [ -f ~/.pystartup ]; then
     export PYTHONSTARTUP=~/.pystartup
 fi
 
-if [ -f ~/.git-completion.bash ]; then
-    source ~/.git-completion.bash
-fi
-
-if [ -f ~/.vagrant.d/bash-completion ]; then
-    source ~/.vagrant.d/bash-completion
-fi
+for completion in ~/.bash_completion/*; do
+  source $completion
+done
 
 export NOSE_WITH_OPENSTACK=1
 export NOSE_OPENSTACK_COLOR=1
