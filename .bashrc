@@ -41,7 +41,7 @@ export EDITOR=vim
 if [ `uname` == "Darwin" ]; then
 
     # look for binaries installed by mac ports after other dirs
-    export PATH=$PATH:/opt/local/bin:/opt/local/sbin
+    export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/sbin
     export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 
     # sudo port install bash-completion
