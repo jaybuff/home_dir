@@ -1,12 +1,3 @@
-# Setup Amazon EC2 Command-Line Tools
-export AWS_ELB_HOME=~/.ec2
-export EC2_HOME=~/.ec2
-if test -d $EC2_HOME; then
-    export PATH=$PATH:$EC2_HOME/bin
-    export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
-    export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
-fi
-
 # set a variable that can be used in the prompt string to show that an error occurs.
 export PROMPT_COMMAND='a=$?; if [ $a -ne 0 ] ; then export ERROR_MSG="[EXIT $a] "; else ERROR_MSG=""; fi'
 
@@ -59,7 +50,6 @@ if [ `uname` == "Darwin" ]; then
 fi
 
 alias json="python -m json.tool"
-alias gerrit="ssh gerrit -p 29418 gerrit"
 
 function cd() {
     builtin cd $* &&
@@ -96,45 +86,5 @@ for completion in ~/.bash_completion/*; do
   source $completion
 done
 
-export NOSE_WITH_OPENSTACK=1
-export NOSE_OPENSTACK_COLOR=1
-export NOSE_OPENSTACK_RED=0.05
-export NOSE_OPENSTACK_YELLOW=0.025
-export NOSE_OPENSTACK_SHOW_ELAPSED=1
-export NOSE_OPENSTACK_STDOUT=1
-
-export PUNGI_CACHEDIR=~/pungi-cache
-
-export VAGRANT_DEFAULT_PROVIDER="vmware_fusion"
-export OPENSTACK_PUPPET="~jaybuff/puppet"
-export CORE_PUPPET="~jaybuff/core-puppet"
-export ISG_PUPPET="~jaybuff/isg-puppet"
-export STACKINTHEBOX="~jaybuff/stackinthebox"
-
-function vagrant() {
-    RUNDIR=~/stackinthebox
-
-    [[ -d $RUNDIR ]] || mkdir -p $RUNDIR
-    cd $RUNDIR
-    [[ -f Vagrantfile ]] || touch Vagrantfile
-    `which vagrant` $*
-    RC=$?
-    cd - > /dev/null
-    return $RC
-}
-
-function nova() {
-    test -z $ospasswd && echo -n "OS Password: " && read -s ospasswd
-    OS_PASSWORD=$ospasswd `which nova` --insecure $*
-}
-
-function keystone() {
-    # only prepend --insecure if the user specified args
-    declare args
-    if [ $# -ne 0 ]; then
-        args="--insecure "
-    fi
-    args+=$*
-
-    command keystone $args
-}
+#export VAGRANT_DEFAULT_PROVIDER="vmware_fusion"
+export QUARK_PUPPET=~/quark-puppet/
