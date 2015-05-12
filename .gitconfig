@@ -16,3 +16,5 @@
 	tool = opendiff
 [clean]
 	requireForce = false
+[push]
+	default = matching
