@@ -8,7 +8,9 @@ export PROMPT_COMMAND='a=$?; if [ $a -ne 0 ] ; then export ERROR_MSG="[EXIT $a] 
 #export GIT_PS1_SHOWUNTRACKEDFILES=1
 if [ -f ~/.git-prompt.sh ]; then
     source ~/.git-prompt.sh
-    export PS1='\t \u@\H:\w$(__git_ps1 " (%s)")\n$ERROR_MSG$ '
+    export PROMPT_COMMAND='__git_ps1 "\t \u@\H:\w" " \\n$ "'
+else
+    export PS1='\t \u@\H:\w\n$ '
 fi
 
 # source host profiles
@@ -17,8 +19,6 @@ profile="$HOME/.login_profiles/$host"
 if [ -f "$profile" ]; then
     source $profile
 fi
-
-export PATH=/usr/local/csi/bin:$PATH:/usr/local/bin:$HOME/bin
 
 shopt -s checkwinsize
 
@@ -33,7 +33,6 @@ if [ `uname` == "Darwin" ]; then
 
     # look for binaries installed by mac ports after other dirs
     export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/sbin
-    export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 
     # sudo port install bash-completion
     if [ -f /opt/local/etc/bash_completion ]; then
@@ -47,7 +46,18 @@ if [ `uname` == "Darwin" ]; then
     if [ -f /Applications/VLC.app/Contents/MacOS/VLC ]; then
         alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
     fi
+else
+    # if I do sudo yum install opt-oracle-jdk-1.7.0-45.x86_64 in rhel 6.5
+    # i need to set this to use the jdk it installs:
+    export JAVA_HOME=/opt/oracle-jdk-1.7.0_45
 fi
+
+# so python webbrowser will work when I'm ssh'ed in somewhere
+# https://docs.python.org/2/library/webbrowser.html
+#if [ -n "$SSH_CLIENT" ]; then
+#    export BROWSER="ssh ${SSH_CLIENT%% *} -- python -m webbrowser -t '%s'"
+#fi
+export BROWSER="ssh 172.16.1.1 -- python -m webbrowser -t '%s'"
 
 alias json="python -m json.tool"
 
@@ -85,6 +95,3 @@ fi
 for completion in ~/.bash_completion/*; do
   source $completion
 done
-
-#export VAGRANT_DEFAULT_PROVIDER="vmware_fusion"
-export QUARK_PUPPET=~/quark-puppet/
