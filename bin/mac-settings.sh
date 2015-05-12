@@ -186,6 +186,9 @@ echo "Enabling snap-to-grid for icons on the desktop and in other icon views"
 /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 
+echo ""
+echo "New finder window should open viewing my home directory"
+defaults write com.apple.finder NewWindowTarget PfHm
 
 ###############################################################################
 # Dock & Mission Control
@@ -197,8 +200,8 @@ echo "Enabling snap-to-grid for icons on the desktop and in other icon views"
 defaults write com.apple.dock persistent-apps -array
 
 echo ""
-echo "Setting the icon size of Dock items to 36 pixels for optimal size/screen-realestate"
-defaults write com.apple.dock tilesize -int 36
+echo "Setting the icon size of Dock items to 64 pixels for optimal size/screen-realestate"
+defaults write com.apple.dock tilesize -int 64
 
 echo ""
 echo "Speeding up Mission Control animations and grouping windows by application"
