@@ -1,12 +1,9 @@
-# set a variable that can be used in the prompt string to show that an error occurs.
-export PROMPT_COMMAND='a=$?; if [ $a -ne 0 ] ; then export ERROR_MSG="[EXIT $a] "; else ERROR_MSG=""; fi'
-
-#export GIT_PS1_SHOWDIRTYSTATE=1
-#export GIT_PS1_SHOWSTASHSTATE=1
-#export GIT_PS1_SHOWUPSTREAM="auto"
-#export GIT_PS1_SHOWCOLORHINTS=1
-#export GIT_PS1_SHOWUNTRACKEDFILES=1
 if [ -f ~/.git-prompt.sh ]; then
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    export GIT_PS1_SHOWSTASHSTATE=1
+    export GIT_PS1_SHOWUPSTREAM="auto"
+    export GIT_PS1_SHOWCOLORHINTS=1
+    export GIT_PS1_SHOWUNTRACKEDFILES=1
     source ~/.git-prompt.sh
     export PROMPT_COMMAND='__git_ps1 "\t \u@\H:\w" " \\n$ "'
 else
@@ -51,13 +48,6 @@ else
     # i need to set this to use the jdk it installs:
     export JAVA_HOME=/opt/oracle-jdk-1.7.0_45
 fi
-
-# so python webbrowser will work when I'm ssh'ed in somewhere
-# https://docs.python.org/2/library/webbrowser.html
-#if [ -n "$SSH_CLIENT" ]; then
-#    export BROWSER="ssh ${SSH_CLIENT%% *} -- python -m webbrowser -t '%s'"
-#fi
-export BROWSER="ssh 172.16.1.1 -- python -m webbrowser -t '%s'"
 
 alias json="python -m json.tool"
 
