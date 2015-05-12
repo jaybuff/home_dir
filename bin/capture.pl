@@ -1,4 +1,4 @@
-#!/opt/local/bin/perl
+#!/usr/bin/perl
 use strict;
 use warnings;
 
@@ -11,7 +11,7 @@ use File::Path;
 my $three_hours = DateTime::Duration->new( hours => 3 );
 my $start = DateTime->now( time_zone => 'America/Los-Angeles' ) - $three_hours;
 
-my $stills_dir = '/Users/jbuffington/Documents/picomin/' . uc( $start->strftime( "%Y-%m-%d" ) );
+my $stills_dir = '/Users/jaybuff/Documents/picomin/' . uc( $start->strftime( "%Y-%m-%d" ) );
 # this is where we'll put the photos that we capture
 if ( !-d $stills_dir ) { 
     mkpath $stills_dir, 0755;
