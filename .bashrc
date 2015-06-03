@@ -43,6 +43,10 @@ if [ `uname` == "Darwin" ]; then
     if [ -f /Applications/VLC.app/Contents/MacOS/VLC ]; then
         alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
     fi
+
+    export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+
+    alias protoc="/usr/local/protobuf-2.4.1/bin/protoc --proto_path=/usr/local/protobuf-2.4.1/include"
 else
     # if I do sudo yum install opt-oracle-jdk-1.7.0-45.x86_64 in rhel 6.5
     # i need to set this to use the jdk it installs:
@@ -85,3 +89,24 @@ fi
 for completion in ~/.bash_completion/*; do
   source $completion
 done
+
+export QUARK_PUPPET=~/quark-puppet/
+export VAGRANT_DEFAULT_PROVIDER=virtualbox
+
+
+gw() {
+    _dir=$PWD
+    while ! [ "$_dir" -ef / ]; do
+        if [ -e "$_dir/gradlew" ]; then
+            "$_dir/gradlew" "$@"
+            return $?
+        fi
+        _dir="$_dir/.."
+    done
+    echo "No gradlew script found in any ancestor directory" >&2
+    return 1
+}
+
+alias gwp='gw --parallel'
+alias gwo='gw --offline'
+alias gwpo='gw --offline --parallel'
