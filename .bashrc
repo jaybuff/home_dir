@@ -1,14 +1,17 @@
 if [ -f ~/.git-prompt.sh ]; then
-    export GIT_PS1_SHOWDIRTYSTATE=1
+    export GIT_PS1_SHOWDIRTYSTATE=0
     export GIT_PS1_SHOWSTASHSTATE=1
     export GIT_PS1_SHOWUPSTREAM="auto"
     export GIT_PS1_SHOWCOLORHINTS=1
-    export GIT_PS1_SHOWUNTRACKEDFILES=1
+    export GIT_PS1_SHOWUNTRACKEDFILES=0
     source ~/.git-prompt.sh
     export PROMPT_COMMAND='__git_ps1 "\t \u@\H:\w" " \\n$ "'
 else
     export PS1='\t \u@\H:\w\n$ '
 fi
+
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # source host profiles
 host=`/bin/hostname`
@@ -48,9 +51,9 @@ if [ `uname` == "Darwin" ]; then
 
     alias protoc="/usr/local/protobuf-2.4.1/bin/protoc --proto_path=/usr/local/protobuf-2.4.1/include"
 else
-    # if I do sudo yum install opt-oracle-jdk-1.7.0-45.x86_64 in rhel 6.5
+    # if I do sudo yum install opt-oracle-jdk-1.8.0-45.x86_64 in rhel 6.5
     # i need to set this to use the jdk it installs:
-    export JAVA_HOME=/opt/oracle-jdk-1.7.0_45
+    export JAVA_HOME=/opt/oracle-jdk-1.8.0_45/
 fi
 
 alias json="python -m json.tool"
@@ -90,9 +93,7 @@ for completion in ~/.bash_completion/*; do
   source $completion
 done
 
-export QUARK_PUPPET=~/quark-puppet/
 export VAGRANT_DEFAULT_PROVIDER=virtualbox
-
 
 gw() {
     _dir=$PWD
@@ -107,6 +108,10 @@ gw() {
     return 1
 }
 
-alias gwp='gw --parallel'
-alias gwo='gw --offline'
-alias gwpo='gw --offline --parallel'
+/usr/bin/gpg-agent --daemon --use-standard-socket
+
+alias gwp="gw :ckclientprotos:compileProto"
+alias curl="curl -n"
+alias killckcode="jps  |grep -i ckcode |awk '{print $1}'  |xargs kill -9"
+
+export RUNPY_KILL_FORCEFULLY=1
