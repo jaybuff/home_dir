@@ -4,6 +4,12 @@
 
 #!/bin/sh
 
+#TODO disable control + arrow which is a keyboard short cut to change spaces.
+#     I can disable this manually by doing this:
+#     Go to System Preferences > Keyboard > Keyboard Shortcuts > Mission
+#     Control and change the settings for "Move left a space" and "Move right a
+#     space" or disable them completely.
+
 # Some things taken from here
 # https://github.com/mathiasbynens/dotfiles/blob/master/.osx
 
