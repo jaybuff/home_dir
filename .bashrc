@@ -24,7 +24,6 @@ shopt -s checkwinsize
 
 alias cx="chmod +x"
 
-export TERM=linux
 export COLORFGBG="white;black"
 export EDITOR=vim
 
@@ -108,10 +107,43 @@ gw() {
     return 1
 }
 
-/usr/bin/gpg-agent --daemon --use-standard-socket
+dw() {
+    _dir=$PWD
+    while ! [ "$_dir" -ef / ]; do
+        if [ -e "$_dir/dockerw" ]; then
+            "$_dir/dockerw" "$@"
+            return $?
+        fi
+        _dir="$_dir/.."
+    done
+
+    ~/liverpool/dockerw "$@"
+}
+
+if [ -x "/usr/bin/gpg-agent" ]; then
+    /usr/bin/gpg-agent --daemon --use-standard-socket
+fi
 
 alias gwp="gw :ckclientprotos:compileProto"
 alias curl="curl -n"
 alias killckcode="jps  |grep -i ckcode |awk '{print $1}'  |xargs kill -9"
 
 export RUNPY_KILL_FORCEFULLY=1
+
+swifthome=/home/jaybuff/swift-2.2-SNAPSHOT-2016-01-11-a-ubuntu15.10
+if [ -d "$swifthome" ]; then
+    export PATH=${PATH}:$swifthome/usr/bin
+fi
+
+if [ -d "/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin" ]; then
+    export PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin:"${PATH}"
+fi
+
+function docker {
+    if [[ -z "$DOCKER_HOST" ]]; then
+        eval $(docker-machine env default)
+    fi
+    command docker "$@"
+}
+
+alias cloudkit-service="~/liverpool/ckcode/Support/cloudkit-service --config /code/ckcode/Sources/developer-service/CloudKitService.swift"
